@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>10 Games Tap Demo - Icons</title>
+<style>
+body { font-family: Arial, sans-serif; background:#f0f4f8; text-align:center; padding:20px; }
+h2 { margin-bottom:10px; }
+#balance { font-size:22px; font-weight:bold; margin:15px 0; }
+.game { display:flex; align-items:center; justify-content:left; margin:12px auto; width:320px; padding:10px; border-radius:10px; background:#fff; box-shadow:0 2px 6px rgba(0,0,0,0.1); cursor:pointer; }
+.game img { width:40px; height:40px; margin-right:12px; }
+.locked { opacity:0.5; cursor:not-allowed; }
+input, button { padding:10px; margin:5px; border-radius:8px; border:1px solid #ccc; }
+button { background:#4CAF50; color:#fff; border:none; cursor:pointer; }
+</style>
+</head>
+<body>
+
+<h2>🎮 10 Games Tap Demo - Icons</h2>
+<div id="balance">💸 0 💸</div>
+
+<div id="keyDiv">
+  <p>🔑 Key বসান Key Required গেম আনলক করতে</p>
+  <input type="text" id="keyInput" placeholder="Enter Key">
+  <button onclick="checkKey()">Unlock Key Games</button>
+</div>
+
+<div id="games" style="display:block;">
+  <div class="game" id="game1"><img src="color.png" alt="Color"> <span>1) 🎨 Color Ball</span></div>
+  <div class="game" id="game2"><img src="number.png" alt="Number"> <span>2) 🔢 Number Quiz</span></div>
+  <div class="game locked" id="game3"><img src="emoji.png" alt="Emoji"> <span>3) 😀 Emoji Match (Key Required)</span></div>
+  <div class="game" id="game4"><img src="puzzle.png" alt="Puzzle"> <span>4) 🧩 Puzzle Box</span></div>
+  <div class="game" id="game5"><img src="target.png" alt="Target"> <span>5) 🎯 Target Tap</span></div>
+  <div class="game" id="game6"><img src="snake.png" alt="Snake"> <span>6) 🐍 Snake Lite</span></div>
+  <div class="game" id="game7"><img src="memory.png" alt="Memory"> <span>7) 🏆 Memory Card</span></div>
+  <div class="game locked" id="game8"><img src="riddle.png" alt="Riddle"> <span>8) 💡 Riddle Quiz (Key Required)</span></div>
+  <div class="game" id="game9"><img src="jokes.png" alt="Jokes"> <span>9) 😂 Funny Jokes</span></div>
+  <div class="game locked" id="game10"><img src="thief.png" alt="Thief"> <span>10) 🕵️‍♂️ Thief Catcher (Key Required)</span></div>
+</div>
+
+<script>
+const correctKeys = ["BDBOY123","JOINBD5054","SUBYT2025"];
+let balance = 0;
+
+// Daily limit tracking
+let lastPlay = localStorage.getItem('lastPlay') || '';
+let today = new Date().toISOString().split('T')[0];
+
+function updateBalance(amount){
+  balance += amount;
+  document.getElementById('balance').innerText = `💸 ${balance} 💸`;
+}
+
+function checkKey(){
+  let key = document.getElementById('keyInput').value.trim();
+  if(correctKeys.includes(key)){
+    alert("✅ Key ঠিক আছে! Key Required গেম আনলক হয়েছে।");
+    if(lastPlay === today){
+      alert("আজ Key Required গেম শেষ হয়েছে। পরের দিন আবার খেলুন।");
+    } else {
+      document.getElementById('game3').classList.remove('locked');
+      document.getElementById('game8').classList.remove('locked');
+      document.getElementById('game10').classList.remove('locked');
+      localStorage.setItem('lastPlay', today);
+    }
+  } else {
+    alert("❌ ভুল Key! আবার চেষ্টা করুন।");
+  }
+}
+
+// গেম ক্লিক ইভেন্ট
+for(let i=1;i<=10;i++){
+  document.getElementById('game'+i).addEventListener('click', function(){
+    if(document.getElementById('game'+i).classList.contains('locked')){
+      alert("এই গেম খোলার জন্য Key লাগবে!");
+      return;
+    }
+    alert("Game Completed! +10 coins");
+    updateBalance(10);
+  });
+}
+</script>
+
+</body>
+</html>
